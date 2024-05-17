@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumir y Traducir Texto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        select, button {
+            margin-top: 10px;
+            padding: 10px;
+        }
+        #resultado {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Resumir y Traducir Texto</h1>
+    <textarea id="texto" placeholder="Escribe aquí el texto a resumir..."></textarea>
+    <br>
+    <select id="idioma">
+        <option value="ingles">Inglés</option>
+        <option value="español">Español</option>
+        <option value="frances">Francés</option>
+        <option value="aleman">Alemán</option>
+        
+    </select>
+    <br>
+    <button onclick="resumirYTraducir()">Resumir y Traducir</button>
+
+    <div id="resultado"></div>
+
+    <script>
+        async function resumirYTraducir() {
+            const texto = document.getElementById('texto').value;
+            const idioma = document.getElementById('idioma').value;
+
+            const response = await fetch('/resumir_traducir', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ texto: texto, idioma: idioma })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('resultado').innerText = data.resultado;
+            } else {
+                document.getElementById('resultado').innerText = 'Error en el procesamiento.';
+            }
+        }
+    </script>
+
+</body>
+</html>
